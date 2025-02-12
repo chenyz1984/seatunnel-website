@@ -68,7 +68,7 @@ Read external data source data through JDBC.
 | password                     | String     | No       | -               | Connection instance password                                                                                                                                                                                                                                      |
 | query                        | String     | Yes      | -               | Query statement                                                                                                                                                                                                                                                   |
 | connection_check_timeout_sec | Int        | No       | 30              | The time in seconds to wait for the database operation used to validate the connection to complete                                                                                                                                                                |
-| partition_column             | String     | No       | -               | The column name for parallelism's partition, only support numeric type,Only support numeric type primary key, and only can config one column.                                                                                                                     |
+| partition_column             | String     | No       | -               | The column name for parallelism's partition, the column must in Supported split data type, and only can config one column.                                                                                                                     |
 | partition_lower_bound        | BigDecimal | No       | -               | The partition_column min value for scan, if not set SeaTunnel will query database get min value.                                                                                                                                                                  |
 | partition_upper_bound        | BigDecimal | No       | -               | The partition_column max value for scan, if not set SeaTunnel will query database get max value.                                                                                                                                                                  |
 | partition_num                | Int        | No       | job parallelism | The number of partition count, only support positive integer. default value is job parallelism                                                                                                                                                                    |
@@ -117,7 +117,6 @@ The JDBC Source connector supports parallel reading of data from tables. SeaTunn
 2. If `partition_column` is null, seatunnel will read the schema from table and get the Primary Key and Unique Index. If there are more than one column in Primary Key and Unique Index, The first column which in the **supported split data type** will be used to split data. For example, the table have Primary Key(nn guid, name varchar), because `guid` id not in **supported split data type**, so the column `name` will be used to split data.
 
 **Supported split data type:**
-* String
 * Number(int, bigint, decimal, ...)
 * Date
 
