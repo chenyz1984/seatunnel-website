@@ -75,7 +75,7 @@
 | password                                   | String     | 否    | -               | 连接实例密码。                                                                                                                                                                                                                |
 | query                                      | String     | 是    | -               | 查询语句。                                                                                                                                                                                                                  |
 | connection_check_timeout_sec               | Int        | 否    | 30              | 验证数据库连接所使用的操作完成的等待时间（秒）。                                                                                                                                                                                               |
-| partition_column                           | String     | 否    | -               | 用于并行度分区的列名，仅支持数字类型，仅支持数字类型的主键，并且只能配置一列。                                                                                                                                                                                |
+| partition_column                           | String     | 否    | -               | 用于并行度分区的列名，该列必须属于 **支持的分片数据类型**，并且只能配置一列。                                                                                                                                                                                |
 | partition_lower_bound                      | BigDecimal | 否    | -               | 扫描时 `partition_column` 的最小值，如果未设置，`SeaTunnel` 将查询数据库以获取最小值。                                                                                                                                                            |
 | partition_upper_bound                      | BigDecimal | 否    | -               | 扫描时 `partition_column` 的最大值，如果未设置，`SeaTunnel` 将查询数据库以获取最大值。                                                                                                                                                            |
 | partition_num                              | Int        | 否    | 作业并行度 | 分区数量，仅支持正整数。<br/>默认值为作业并行度。                                                                                                                                                                                            |
@@ -100,7 +100,6 @@ JDBC 源连接器支持从表中并行读取数据。SeaTunnel 将使用特定�
 2. 如果 partition_column 为空，SeaTunnel 将从表中读取模式并获取主键和唯一索引。如果主键和唯一索引中有多个列，则会选择第一个属于 **支持的分片数据类型** 的列来进行数据分片。例如，如果表的主键是 `(nn guid, name varchar)`，因为 `guid` 不属于 **支持的分片数据类型**，所以会选择列 `name` 来进行数据分片。
 
 **支持的拆分数据类型:**
-* String
 * Number(int, bigint, decimal, ...)
 * Date
 
